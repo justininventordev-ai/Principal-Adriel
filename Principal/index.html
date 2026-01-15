@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Interesante - Perfect Contrast</title>
+    <title>Interesante - Fondos Dinámicos</title>
     <meta name="theme-color" content="#000000">
     
     <!-- Tailwind CSS & FontAwesome -->
@@ -31,12 +31,12 @@
                         'ken-burns': 'kenBurns 20s ease-in-out infinite alternate',
                         'slide-up': 'slideUp 0.8s ease-out forwards',
                         'pulse-slow': 'pulse 4s infinite',
-                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-slow': 'fadeIn 1s ease-in-out',
                     },
                     keyframes: {
                         kenBurns: { '0%': { transform: 'scale(1.0)' }, '100%': { transform: 'scale(1.25)' } },
                         slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } }
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
                     }
                 }
             }
@@ -46,222 +46,109 @@
     <style>
         :root {
             --brand-color: #39ff14;
-            --bg-base: #000000;
-            --bg-overlay: rgba(0, 20, 0, 0.8);
-            --section-bg: linear-gradient(180deg, rgba(2, 26, 2, 0.95) 0%, rgba(0,0,0,1) 100%);
-            --particle-color: rgba(57, 255, 20, 0.4);
-            --particle-glow: 0 0 10px rgba(57, 255, 20, 0.8);
+            --bg-base: #0a0a0a;
+            --bg-overlay: rgba(10, 10, 10, 0.95);
+            --section-bg: #0a0a0a;
             --text-main: #ffffff;
-            --text-sub: #9ca3af;
-            --card-bg: #111111;
-            --card-border: rgba(255, 255, 255, 0.1);
+            --text-sub: #a3a3a3;
+            --card-bg: #151515;
+            --card-border: #262626;
+            --nav-bg: rgba(15, 15, 15, 0.98);
         }
 
-        /* --- MODO CLARO (Light Mode) REFINADO --- */
+        /* --- MODO CLARO (Light Mode) --- */
         body.light-mode {
-            --bg-base: #e5e7eb; /* Gris suave, no blanco puro */
-            --bg-overlay: rgba(255, 255, 255, 0.90);
-            /* Gradiente sutil para secciones */
-            --section-bg: linear-gradient(180deg, #f3f4f6 0%, #ffffff 100%); 
-            --text-main: #111827; /* Gris muy oscuro, casi negro */
-            --text-sub: #4b5563;
-            --card-bg: #ffffff; /* Tarjetas blancas puras para resaltar */
-            --card-border: #d1d5db; /* Borde gris visible */
-            --particle-color: rgba(0, 0, 0, 0.2);
-            --particle-glow: none;
+            --bg-base: #f5f5f5;
+            --bg-overlay: rgba(255, 255, 255, 0.98);
+            --section-bg: #f5f5f5;
+            --text-main: #111827;
+            --text-sub: #52525b;
+            --card-bg: #ffffff;
+            --card-border: #e4e4e7;
+            --nav-bg: rgba(255, 255, 255, 0.98);
         }
 
-        /* Utilidades Dinámicas */
         .text-dynamic { color: var(--text-main); }
         .text-sub-dynamic { color: var(--text-sub); }
         
-        /* OVERRIDES ESPECÍFICOS PARA MODO CLARO */
-        body.light-mode .text-white { color: #1f2937 !important; } /* Títulos oscuros */
-        body.light-mode .text-gray-300 { color: #374151 !important; } /* Texto cuerpo oscuro */
-        body.light-mode .text-gray-400 { color: #4b5563 !important; }
-        body.light-mode .text-gray-500 { color: #6b7280 !important; }
+        body.light-mode .text-white { color: #111827 !important; } 
+        body.light-mode .text-gray-300, body.light-mode .text-gray-400, body.light-mode .text-gray-500 { color: var(--text-sub) !important; }
         
-        /* Fondos y Estructura */
-        body.light-mode nav.glass-nav { 
-            background: rgba(255, 255, 255, 0.9); 
-            border-bottom: 1px solid #d1d5db; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        body.light-mode nav a { color: #111827; font-weight: 700; }
-        body.light-mode #menu-btn { color: #111827; }
-        
-        body.light-mode footer { 
-            background: #e5e7eb; 
-            border-top: 1px solid #d1d5db; 
-            color: #1f2937; 
+        .glass-nav { 
+            background: var(--nav-bg); 
+            border-bottom: 1px solid var(--card-border); 
         }
         
-        body.light-mode #bottom-dock { 
-            background: rgba(255,255,255,0.95); 
-            border: 1px solid #e5e7eb; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-        }
-
-        /* Tarjetas en Modo Claro - Efecto "Elevación" */
-        body.light-mode .mobile-card {
-            background-color: #ffffff !important;
-            border-color: #e5e7eb;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        body.light-mode .mobile-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-            border-color: var(--brand-color);
-            transform: translateY(-5px);
+        footer { 
+            background: var(--bg-base); 
+            border-top: 1px solid var(--card-border); 
         }
         
-        /* Mantener video oscuro */
-        body.light-mode .mobile-card .aspect-video { background-color: #000 !important; }
-        body.light-mode .bg-black:not(.aspect-video) { background-color: #ffffff !important; }
-        body.light-mode .bg-\[\#151515\] { background-color: #f8fafc !important; }
-        body.light-mode .bg-\[\#1a1a1a\] { background-color: #f1f5f9 !important; border: 1px solid #e2e8f0; } 
-
-        /* Modales */
-        body.light-mode #info-modal { background-color: rgba(243, 244, 246, 0.98); }
-        body.light-mode .bg-black\/95 { background-color: rgba(255,255,255,0.98) !important; }
-        body.light-mode #mobile-menu-overlay { background-color: rgba(255,255,255,0.98); }
-        body.light-mode #mobile-menu-overlay .text-white { color: #111 !important; }
-        
-        /* Menú Secreto */
-        body.light-mode #secret-menu { 
-            background-color: #ffffff; 
-            color: #111; 
-            border: 1px solid #d1d5db;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        body.light-mode #secret-menu button { 
-            border-color: #9ca3af; 
-            color: #374151; 
-            background-color: #f3f4f6;
-        }
-        body.light-mode #secret-menu button:hover { 
-            background-color: var(--brand-color); 
-            color: #fff; 
-            border-color: transparent;
+        #bottom-dock { 
+            background: var(--nav-bg); 
+            border: 1px solid var(--card-border); 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        /* BOTONES DE CATEGORÍA (Footer) - Solución "No tan blanco" */
-        body.light-mode .category-chip { 
-            border-color: #9ca3af !important; /* Borde gris visible */
-            color: #4b5563 !important; 
-            background-color: #ffffff; /* Fondo blanco */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        body.light-mode .category-chip:hover { 
-            border-color: var(--brand-color) !important; 
-            background: var(--brand-color) !important; 
-            color: #ffffff !important; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        /* Modal Detalles */
-        body.light-mode .bg-\[\#111\] { 
-            background-color: #ffffff !important; 
-            border: 1px solid #e5e7eb !important; 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); 
-        }
-        body.light-mode #modal-body { color: #374151 !important; line-height: 1.8; }
-        body.light-mode .border-brand-neon\/30 { border-color: #e5e7eb !important; }
-
-        /* --- TEMAS ESTACIONALES --- */
-        body.theme-jan { --brand-color: #39ff14; --bg-base: #020a02; --section-bg: linear-gradient(to bottom, #051a05, #000); }
-        body.theme-feb { --brand-color: #ff0080; --bg-base: #1a000d; --section-bg: linear-gradient(to bottom, #33001a, #000); }
-        body.theme-mar { --brand-color: #00ff9d; --bg-base: #001a10; --section-bg: linear-gradient(to bottom, #003322, #000); }
-        body.theme-apr { --brand-color: #50c878; --bg-base: #051a05; --section-bg: linear-gradient(to bottom, #0a2e0a, #000); }
-        body.theme-may { --brand-color: #e0b0ff; --bg-base: #1a051a; --section-bg: linear-gradient(to bottom, #2e0a2e, #000); }
-        body.theme-jun { --brand-color: #ffd700; --bg-base: #1a1200; --section-bg: linear-gradient(to bottom, #332200, #000); }
-        body.theme-jul { --brand-color: #228b22; --bg-base: #001a00; --section-bg: linear-gradient(to bottom, #002e00, #000); }
-        body.theme-aug { --brand-color: #00fa9a; --bg-base: #001a15; --section-bg: linear-gradient(to bottom, #002e25, #000); }
-        body.theme-sep { --brand-color: #ff4500; --bg-base: #1a0500; --section-bg: linear-gradient(to bottom, #330a00, #000); }
-        body.theme-oct { --brand-color: #9d00ff; --bg-base: #0f001a; --section-bg: linear-gradient(to bottom, #1f0033, #000); }
-        body.theme-nov { --brand-color: #98fb98; --bg-base: #051a0a; --section-bg: linear-gradient(to bottom, #0a2e15, #000); }
-        body.theme-dec { --brand-color: #00ffff; --bg-base: #00111a; --section-bg: linear-gradient(to bottom, #002233, #000); }
-
-        /* Override para mantener el fondo "no tan blanco" cuando hay temas activos en modo claro */
-        body.light-mode.theme-jan, body.light-mode.theme-feb, body.light-mode.theme-mar, 
-        body.light-mode.theme-apr, body.light-mode.theme-may, body.light-mode.theme-jun, 
-        body.light-mode.theme-jul, body.light-mode.theme-aug, body.light-mode.theme-sep, 
-        body.light-mode.theme-oct, body.light-mode.theme-nov, body.light-mode.theme-dec {
-            background-color: #e5e7eb; /* Fondo base gris */
-            --bg-base: #e5e7eb;
-            --section-bg: linear-gradient(180deg, #f3f4f6 0%, #ffffff 100%);
-        }
-
-        body { 
-            background-color: var(--bg-base);
-            color: var(--text-main); 
-            transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden;
-        }
-        
-        .glass-nav { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        
         .mobile-card { 
-            border-radius: 1.5rem; 
+            border-radius: 1rem; 
             border: 1px solid var(--card-border); 
             background: var(--card-bg); 
-            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
         }
-        .mobile-card:hover { border-color: var(--brand-color); transform: translateY(-5px); box-shadow: 0 0 20px var(--brand-color); }
-        .tap-effect:active { transform: scale(0.96); }
+        
+        body:not(.light-mode) .mobile-card:hover { border-color: var(--brand-color); transform: translateY(-3px); }
+        body.light-mode .mobile-card:hover { border-color: var(--brand-color); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05); transform: translateY(-3px); }
+        
+        body.light-mode .mobile-card .aspect-video { background-color: #000 !important; }
+        body.light-mode .bg-black:not(.aspect-video), body.light-mode .bg-\[\#151515\] { background-color: var(--card-bg) !important; }
+        body.light-mode .bg-\[\#1a1a1a\] { background-color: #fafafa !important; border: 1px solid #e4e4e7; } 
 
-        #bottom-dock { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 9999; }
+        #info-modal, #mobile-menu-overlay, #secret-menu { background-color: var(--bg-overlay); }
+        body.light-mode #mobile-menu-overlay .text-white, body.light-mode #secret-menu { color: var(--text-main) !important; }
+        #secret-menu { border: 1px solid var(--card-border); }
+        body.light-mode #secret-menu button { background: #f4f4f5; color: var(--text-main); border: 1px solid #d4d4d8; }
+        body.light-mode #secret-menu button:hover { background: var(--brand-color); color: white; border-color: var(--brand-color); }
+
+        .category-chip { border: 1px solid var(--card-border); color: var(--text-sub); background: transparent; }
+        .category-chip:hover { border-color: var(--brand-color) !important; color: var(--brand-color) !important; background: transparent; }
+        body.light-mode .category-chip:hover { background: var(--brand-color) !important; color: white !important; }
+
+        body.light-mode .bg-\[\#111\] { background-color: var(--card-bg) !important; border: 1px solid var(--card-border) !important; }
+        body.light-mode #modal-body { color: var(--text-sub) !important; }
+        body.light-mode .border-brand-neon\/30 { border-color: var(--card-border) !important; }
+
+        /* Estilos Estacionales */
+        body.theme-jan { --brand-color: #39ff14; }
+        body.theme-feb { --brand-color: #ff0080; }
+        body.theme-mar { --brand-color: #00ff9d; }
+        body.theme-apr { --brand-color: #50c878; }
+        body.theme-may { --brand-color: #b87aff; }
+        body.theme-jun { --brand-color: #ffd700; }
+        body.theme-jul { --brand-color: #00b300; }
+        body.theme-aug { --brand-color: #00fa9a; }
+        body.theme-sep { --brand-color: #ff5e00; }
+        body.theme-oct { --brand-color: #9d00ff; }
+        body.theme-nov { --brand-color: #98fb98; }
+        body.theme-dec { --brand-color: #00dfff; }
+
+        body { background-color: var(--bg-base); color: var(--text-main); transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; }
+        #bottom-dock { transition: transform 0.3s ease; z-index: 9999; }
         #bottom-dock.hidden-dock { transform: translate(-50%, 200%); }
-
-        .epic-section {
-            position: relative;
-            background: var(--section-bg);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            transition: background 1s ease;
-            overflow: hidden; 
-        }
-
-        #seasonal-bg, .section-particles {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;
-        }
-        #seasonal-bg { position: fixed; z-index: -1; }
-        .section-particles { z-index: 0; } 
-        
-        .particle {
-            position: absolute; 
-            color: var(--particle-color); 
-            text-shadow: var(--particle-glow);
-            opacity: 0.7; 
-            animation: floatUp 15s linear infinite;
-        }
-        .particle.falling { animation: floatDown 8s linear infinite; }
-        
-        @keyframes floatUp {
-            0% { transform: translateY(110%) rotate(0deg) scale(0.8); opacity: 0; }
-            100% { transform: translateY(-10%) rotate(360deg) scale(1.2); opacity: 0; }
-        }
-        @keyframes floatDown {
-            0% { transform: translateY(-10%) rotate(0deg) scale(0.8); opacity: 0; }
-            100% { transform: translateY(110%) rotate(360deg) scale(1.2); opacity: 0; }
-        }
-
-        .category-chip:hover { 
-            border-color: rgba(255, 255, 255, 0.3);
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
+        .epic-section { position: relative; background: var(--section-bg); padding-top: 2rem; padding-bottom: 2rem; }
         .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); }
-        .play-icon { width: 50px; height: 50px; background: var(--brand-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--brand-color); }
+        .play-icon { width: 50px; height: 50px; background: var(--brand-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
         ::-webkit-scrollbar-thumb { background: var(--brand-color); border-radius: 3px; }
-
-        #secret-menu { backdrop-filter: blur(10px); background: rgba(0,0,0,0.9); border: 1px solid var(--brand-color); }
-
         .loading-spinner { col-span-full: 1; text-align: center; padding: 3rem 0; width: 100%; grid-column: 1 / -1; }
+        .tap-effect:active { transform: scale(0.98); }
+        
+        /* Transición de imagen de fondo */
+        #hero-image { transition: opacity 0.5s ease-in-out; }
     </style>
 </head>
-<body class="antialiased selection:bg-brand-neon selection:text-black transition-colors duration-1000">
+<body class="antialiased selection:bg-brand-neon selection:text-black transition-colors duration-300">
 
     <!-- LÓGICA DE CARGA -->
     <script type="module">
@@ -330,76 +217,74 @@
             });
         }
 
-        function cardVideo(post) { return `<div onclick="openPost('${post.id}')" class="mobile-card overflow-hidden group cursor-pointer tap-effect hover:border-[var(--brand-color)]"><div class="relative aspect-video w-full bg-black"><video src="${post.media_url}#t=1.0" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" preload="metadata" muted playsinline></video><div class="play-overlay"><div class="play-icon"><i class="fas fa-play text-black ml-1 text-2xl"></i></div></div></div><div class="p-5"><h3 class="text-xl font-bold text-dynamic font-sans leading-tight mb-2 line-clamp-2">${post.titulo}</h3></div></div>`; }
-        function cardImage(post) { return `<div onclick="openPost('${post.id}')" class="mobile-card relative h-80 lg:h-[500px] overflow-hidden group cursor-pointer tap-effect"><img src="${post.media_url}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400'"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div><div class="absolute bottom-0 p-6"><h3 class="text-3xl font-dancing font-bold text-white leading-tight">${post.titulo}</h3></div></div>`; }
+        function cardVideo(post) { return `<div onclick="openPost('${post.id}')" class="mobile-card overflow-hidden group cursor-pointer tap-effect"><div class="relative aspect-video w-full bg-black"><video src="${post.media_url}#t=1.0" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" preload="metadata" muted playsinline></video><div class="play-overlay"><div class="play-icon"><i class="fas fa-play text-black ml-1 text-2xl"></i></div></div></div><div class="p-5"><h3 class="text-xl font-bold text-dynamic font-sans leading-tight mb-2 line-clamp-2">${post.titulo}</h3></div></div>`; }
+        function cardImage(post) { return `<div onclick="openPost('${post.id}')" class="mobile-card relative h-80 lg:h-[500px] overflow-hidden group cursor-pointer tap-effect"><img src="${post.media_url}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400'"><div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div><div class="absolute bottom-0 p-6"><h3 class="text-3xl font-dancing font-bold text-white leading-tight drop-shadow-lg">${post.titulo}</h3></div></div>`; }
 
         loadContent();
     </script>
 
-    <div id="seasonal-bg"></div>
-
     <!-- Menu Secreto -->
-    <div id="secret-menu" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center p-5 animate-fade-in text-white">
-        <h2 class="text-brand-neon font-orbitron text-2xl mb-6 uppercase tracking-widest text-center shadow-lg">Control Estacional</h2>
+    <div id="secret-menu" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center p-5 animate-fade-in text-dynamic">
+        <h2 class="text-brand-neon font-orbitron text-2xl mb-6 uppercase tracking-widest text-center">Control Estacional</h2>
         <div class="grid grid-cols-3 gap-3 w-full max-w-md">
-            <button onclick="forceTheme(0); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-green-900 text-xs">ENE</button>
-            <button onclick="forceTheme(1); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-pink-900 text-xs">FEB</button>
-            <button onclick="forceTheme(2); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-green-800 text-xs">MAR</button>
-            <button onclick="forceTheme(3); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-green-900 text-xs">ABR</button>
-            <button onclick="forceTheme(4); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-purple-900 text-xs">MAY</button>
-            <button onclick="forceTheme(5); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-yellow-900 text-xs">JUN</button>
-            <button onclick="forceTheme(6); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-green-900 text-xs">JUL</button>
-            <button onclick="forceTheme(7); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-green-900 text-xs">AGO</button>
-            <button onclick="forceTheme(8); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-orange-900 text-xs">SEP</button>
-            <button onclick="forceTheme(9); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-purple-800 text-xs">OCT</button>
-            <button onclick="forceTheme(10); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-green-900 text-xs">NOV</button>
-            <button onclick="forceTheme(11); toggleSecretMenu()" class="p-2 border border-gray-700 rounded hover:bg-blue-900 text-xs">DIC</button>
+            <button onclick="forceTheme(0); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">ENE</button>
+            <button onclick="forceTheme(1); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">FEB</button>
+            <button onclick="forceTheme(2); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">MAR</button>
+            <button onclick="forceTheme(3); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">ABR</button>
+            <button onclick="forceTheme(4); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">MAY</button>
+            <button onclick="forceTheme(5); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">JUN</button>
+            <button onclick="forceTheme(6); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">JUL</button>
+            <button onclick="forceTheme(7); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">AGO</button>
+            <button onclick="forceTheme(8); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">SEP</button>
+            <button onclick="forceTheme(9); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">OCT</button>
+            <button onclick="forceTheme(10); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">NOV</button>
+            <button onclick="forceTheme(11); toggleSecretMenu()" class="p-2 rounded text-xs font-bold">DIC</button>
         </div>
-        <button onclick="toggleSecretMenu()" class="mt-8 text-gray-500 hover:text-white underline text-sm">Cerrar</button>
+        <button onclick="toggleSecretMenu()" class="mt-8 text-sub-dynamic hover:text-dynamic underline text-sm">Cerrar</button>
     </div>
 
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 top-0 glass-nav h-14 lg:h-20 flex items-center justify-between px-5 transition-colors duration-500">
-        <a href="#" onclick="navigateTo('home'); return false;" class="font-dancing text-xl lg:text-3xl font-bold text-white tracking-wider">
+    <nav class="fixed w-full z-50 top-0 glass-nav h-14 lg:h-20 flex items-center justify-between px-5 transition-colors duration-300">
+        <a href="#" onclick="navigateTo('home'); return false;" class="font-dancing text-xl lg:text-3xl font-bold text-dynamic tracking-wider">
             Interesante<span class="text-brand-neon text-3xl">.</span>
         </a>
         <button id="menu-btn" onclick="toggleMenu()" class="text-xl text-brand-neon tap-effect p-2"><i class="fas fa-bars"></i></button>
     </nav>
 
     <!-- Menú Móvil -->
-    <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] bg-black/95 hidden flex flex-col items-center justify-center space-y-8 transition-transform duration-300 translate-x-full">
-        <button onclick="toggleMenu()" class="absolute top-5 right-5 text-2xl text-white hover:text-brand-neon p-4"><i class="fas fa-times"></i></button>
-        <a href="#" onclick="navigateTo('home')" class="text-2xl font-epic text-white hover:text-brand-neon transition-colors">INICIO</a>
-        <a href="#" onclick="navigateTo('plantillas')" class="text-2xl font-epic text-brand-neon hover:text-white transition-colors">PLANTILLAS</a>
-        <a href="#" onclick="navigateTo('animales')" class="text-2xl font-epic text-white hover:text-brand-neon transition-colors">ANIMALES</a>
-        <a href="#" onclick="navigateTo('planeta')" class="text-2xl font-epic text-white hover:text-brand-neon transition-colors">PLANETA</a>
-        <a href="#" onclick="navigateTo('humanos')" class="text-2xl font-epic text-white hover:text-brand-neon transition-colors">HUMANOS</a>
-        <a href="#" onclick="navigateTo('temporada')" class="text-2xl font-epic text-white hover:text-brand-neon transition-colors">TEMPORADA</a>
+    <div id="mobile-menu-overlay" class="fixed inset-0 z-[60] hidden flex flex-col items-center justify-center space-y-8 transition-transform duration-300 translate-x-full">
+        <button onclick="toggleMenu()" class="absolute top-5 right-5 text-2xl text-dynamic hover:text-brand-neon p-4"><i class="fas fa-times"></i></button>
+        <a href="#" onclick="navigateTo('home')" class="text-2xl font-epic text-dynamic hover:text-brand-neon transition-colors">INICIO</a>
+        <a href="#" onclick="navigateTo('plantillas')" class="text-2xl font-epic text-brand-neon hover:text-dynamic transition-colors">PLANTILLAS</a>
+        <a href="#" onclick="navigateTo('animales')" class="text-2xl font-epic text-dynamic hover:text-brand-neon transition-colors">ANIMALES</a>
+        <a href="#" onclick="navigateTo('planeta')" class="text-2xl font-epic text-dynamic hover:text-brand-neon transition-colors">PLANETA</a>
+        <a href="#" onclick="navigateTo('humanos')" class="text-2xl font-epic text-dynamic hover:text-brand-neon transition-colors">HUMANOS</a>
+        <a href="#" onclick="navigateTo('temporada')" class="text-2xl font-epic text-dynamic hover:text-brand-neon transition-colors">TEMPORADA</a>
     </div>
 
     <!-- VISTA 1: HOME -->
     <main id="view-home" class="page-view pb-32 pt-14 lg:pt-20">
-        <section class="relative h-[85vh] flex flex-col items-center justify-center overflow-hidden">
+        <section class="relative h-[85vh] flex flex-col items-center justify-center overflow-hidden bg-black">
             <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80" class="w-full h-full object-cover opacity-30 animate-ken-burns grayscale hover:grayscale-0 transition-all duration-[2s]">
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--bg-base)]"></div>
+                <!-- IMAGEN HERO DINÁMICA -->
+                <img id="hero-image" src="" class="w-full h-full object-cover opacity-50 animate-ken-burns grayscale hover:grayscale-0 transition-all duration-[2s]">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-var(--bg-base)"></div>
             </div>
             
             <div class="relative z-10 text-center px-4 w-full">
                 <p id="seasonal-subtitle" class="text-brand-neon font-orbitron text-[10px] sm:text-sm tracking-[0.3em] font-bold uppercase mb-4 animate-slide-up">
                     <i class="fas fa-leaf mr-2"></i> ESTÉTICA PURA <i class="fas fa-leaf ml-2"></i>
                 </p>
-                <h1 class="font-orbitron font-black text-2xl sm:text-6xl lg:text-8xl text-white tracking-widest animate-slide-up break-words drop-shadow-[0_0_20px_var(--brand-color)]">INTERESANTE</h1>
-                <div class="w-20 h-1 bg-brand-neon mx-auto my-6 rounded-full shadow-[0_0_20px_var(--brand-color)] animate-slide-up"></div>
-                <button onclick="document.getElementById('videos-home').scrollIntoView({behavior:'smooth'})" class="px-8 py-3 bg-transparent border border-brand-neon text-brand-neon text-xs sm:text-base font-orbitron font-bold rounded-full hover:bg-brand-neon hover:text-black transition-all duration-300 animate-slide-up shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                <h1 class="font-orbitron font-black text-2xl sm:text-6xl lg:text-8xl text-white tracking-widest animate-slide-up break-words">INTERESANTE</h1>
+                <div class="w-20 h-1 bg-brand-neon mx-auto my-6 rounded-full animate-slide-up"></div>
+                <button onclick="document.getElementById('videos-home').scrollIntoView({behavior:'smooth'})" class="px-8 py-3 bg-transparent border-2 border-brand-neon text-brand-neon text-xs sm:text-base font-orbitron font-bold rounded-full hover:bg-brand-neon hover:text-black transition-all duration-300 animate-slide-up">
                     EXPLORAR
                 </button>
             </div>
         </section>
 
         <!-- SECCIÓN VIDEOS HOME -->
-        <section id="videos-home" class="epic-section py-16 px-5 min-h-[50vh]">
-            <div class="section-particles" id="video-particles-home"></div>
+        <section id="videos-home" class="epic-section px-5 min-h-[50vh]">
             <div class="max-w-7xl mx-auto relative z-10">
                 <h2 class="font-orbitron text-2xl md:text-3xl font-bold text-dynamic mb-8 border-l-4 border-brand-neon pl-4 flex items-center">
                     VIDEOS <i class="fas fa-play-circle ml-3 text-brand-neon animate-pulse-slow"></i>
@@ -411,10 +296,9 @@
         </section>
 
         <!-- SECCIÓN VISUAL HOME -->
-        <section class="epic-section py-16 px-5 min-h-[50vh]">
-            <div class="section-particles" id="visual-particles-home"></div>
+        <section class="epic-section px-5 min-h-[50vh]">
             <div class="max-w-7xl mx-auto relative z-10">
-                <h2 class="font-orbitron text-2xl md:text-3xl font-bold text-dynamic mb-8 flex justify-between items-center border-b border-gray-800 pb-2">
+                <h2 class="font-orbitron text-2xl md:text-3xl font-bold text-dynamic mb-8 flex justify-between items-center border-b border-var(--card-border) pb-2">
                     VISUAL <i class="fas fa-eye text-brand-neon"></i>
                 </h2>
                 <div id="grid-home-visual" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
@@ -424,54 +308,44 @@
         </section>
     </main>
 
-    <!-- VISTAS DE CATEGORÍA UNIFICADAS (Iguales a Home con Spinners) -->
-    
-    <!-- Plantillas -->
+    <!-- VISTAS DE CATEGORÍA UNIFICADAS -->
     <main id="view-plantillas" class="page-view hidden pt-24 pb-32">
         <div class="px-5 mb-10"><h1 class="text-4xl md:text-6xl font-orbitron font-bold text-brand-neon text-center">PLANTILLAS</h1></div>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="video-particles-plantillas"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-plantillas-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="visual-particles-plantillas"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-plantillas-visual" class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-plantillas-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-plantillas-visual" class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
     </main>
-
-    <!-- Animales -->
     <main id="view-animales" class="page-view hidden pt-24 pb-32">
-        <div class="px-5 mb-10"><h1 class="text-4xl md:text-6xl font-orbitron font-bold text-white text-center">ANIMALES</h1></div>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="video-particles-animales"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-animales-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="visual-particles-animales"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-animales-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <div class="px-5 mb-10"><h1 class="text-4xl md:text-6xl font-orbitron font-bold text-dynamic text-center">ANIMALES</h1></div>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-animales-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-animales-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
     </main>
-
-    <!-- Planeta -->
     <main id="view-planeta" class="page-view hidden pt-24 pb-32">
         <div class="px-5 mb-10"><h1 class="text-4xl md:text-6xl font-orbitron font-bold text-brand-neon text-center">PLANETA</h1></div>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="video-particles-planeta"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-planeta-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="visual-particles-planeta"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-planeta-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-planeta-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-planeta-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
     </main>
-
-    <!-- Humanos -->
     <main id="view-humanos" class="page-view hidden pt-24 pb-32">
-        <div class="px-5 mb-10"><h1 class="text-4xl md:text-6xl font-orbitron font-bold text-white text-center">HUMANOS</h1></div>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="video-particles-humanos"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-humanos-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="visual-particles-humanos"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-humanos-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <div class="px-5 mb-10"><h1 class="text-4xl md:text-6xl font-orbitron font-bold text-dynamic text-center">HUMANOS</h1></div>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-humanos-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-humanos-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
     </main>
-
-    <!-- Temporada -->
     <main id="view-temporada" class="page-view hidden pt-24 pb-32">
         <div class="px-5 mb-10"><h1 class="text-4xl md:text-6xl font-orbitron font-bold text-brand-neon text-center">TEMPORADA</h1></div>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="video-particles-temporada"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-temporada-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
-        <section class="epic-section py-10 px-5"><div class="section-particles" id="visual-particles-temporada"></div><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-temporada-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VIDEOS</h2><div id="grid-temporada-videos" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
+        <section class="epic-section px-5"><div class="max-w-7xl mx-auto relative z-10"><h2 class="text-2xl font-bold text-dynamic mb-6 border-l-4 border-brand-neon pl-4">VISUAL</h2><div id="grid-temporada-visual" class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="loading-spinner"><i class="fas fa-circle-notch fa-spin text-3xl text-brand-neon"></i></div></div></div></section>
     </main>
 
     <!-- FOOTER FINAL -->
-    <footer class="py-24 px-5 text-center">
+    <footer class="py-24 px-5 text-center transition-colors duration-300">
         <div class="max-w-5xl mx-auto">
             <h4 class="font-orbitron text-[10px] font-bold text-brand-neon tracking-[0.4em] mb-10 uppercase">Explorar Categorías</h4>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-16">
-                <button onclick="navigateTo('home')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect text-sub-dynamic border border-white/10 bg-transparent transition-all">INICIO</button>
-                <button onclick="navigateTo('plantillas')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect text-sub-dynamic border border-white/10 bg-transparent transition-all">PLANTILLAS</button>
-                <button onclick="navigateTo('animales')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect text-sub-dynamic border border-white/10 bg-transparent transition-all">ANIMALES</button>
-                <button onclick="navigateTo('planeta')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect text-sub-dynamic border border-white/10 bg-transparent transition-all">PLANETA</button>
-                <button onclick="navigateTo('humanos')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect text-sub-dynamic border border-white/10 bg-transparent transition-all">HUMANOS</button>
-                <button onclick="navigateTo('temporada')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect text-sub-dynamic border border-white/10 bg-transparent transition-all">TEMPORADA</button>
+                <button onclick="navigateTo('home')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect transition-all">INICIO</button>
+                <button onclick="navigateTo('plantillas')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect transition-all">PLANTILLAS</button>
+                <button onclick="navigateTo('animales')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect transition-all">ANIMALES</button>
+                <button onclick="navigateTo('planeta')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect transition-all">PLANETA</button>
+                <button onclick="navigateTo('humanos')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect transition-all">HUMANOS</button>
+                <button onclick="navigateTo('temporada')" class="category-chip py-3 px-4 rounded-xl text-xs font-orbitron font-bold tracking-wider tap-effect transition-all">TEMPORADA</button>
             </div>
             <p class="text-sub-dynamic font-orbitron text-[9px] uppercase opacity-70">
                 <span class="cursor-pointer select-none px-2 py-1 hover:text-brand-neon transition-colors" onclick="showCreator()">&copy;</span> 
@@ -482,7 +356,7 @@
     </footer>
 
     <!-- DOCK FLOTANTE -->
-    <div id="bottom-dock" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-4 py-2 flex gap-5 md:gap-8 shadow-[0_5px_20px_rgba(0,0,0,0.6)]">
+    <div id="bottom-dock" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 rounded-2xl px-4 py-2 flex gap-5 md:gap-8 transition-all duration-300">
         <i id="dock-home" onclick="navigateTo('home')" class="fas fa-home text-xl cursor-pointer hover:scale-110 transition-all text-cyan-400" title="Inicio"></i>
         <i id="dock-plantillas" onclick="navigateTo('plantillas')" class="fas fa-file-alt text-xl cursor-pointer hover:scale-110 transition-all text-gray-500 hover:text-brand-neon" title="Plantillas"></i>
         <i id="dock-animales" onclick="navigateTo('animales')" class="fas fa-paw text-xl cursor-pointer hover:scale-110 transition-all text-gray-500 hover:text-brand-neon" title="Animales"></i>
@@ -492,13 +366,13 @@
     </div>
 
     <!-- MODAL -->
-    <div id="info-modal" class="fixed inset-0 z-[100] bg-black/95 hidden overflow-y-auto animate-fade-in backdrop-blur-sm">
+    <div id="info-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto animate-fade-in">
         <button onclick="closeModal()" class="fixed top-4 right-4 z-50 bg-black/50 p-3 rounded-full border border-brand-neon text-brand-neon hover:bg-red-900 hover:border-red-500 hover:text-white transition-colors"><i class="fas fa-times"></i></button>
         <div class="min-h-screen pb-10">
             <div id="modal-media-wrapper" class="w-full flex items-center justify-center relative bg-black transition-all"></div>
             <div class="max-w-5xl mx-auto px-6 mt-8 relative z-10">
-                <div class="bg-[#111] rounded-3xl p-8 lg:p-12 border border-brand-neon/30">
-                    <div class="w-16 h-1 bg-brand-neon mx-auto rounded-full mb-8 shadow-[0_0_10px_var(--brand-color)]"></div>
+                <div class="bg-[#111] rounded-3xl p-8 lg:p-12 border border-brand-neon/30 transition-all duration-300">
+                    <div class="w-16 h-1 bg-brand-neon mx-auto rounded-full mb-8"></div>
                     <span id="modal-cat" class="text-brand-neon text-xs font-bold tracking-widest uppercase mb-3 block">CATEGORÍA</span>
                     <h2 id="modal-title" class="text-3xl lg:text-6xl font-bold font-dancing text-white mb-6 leading-tight">Título</h2>
                     <div id="modal-body" class="text-gray-300 text-lg leading-relaxed space-y-6 font-sans"></div>
@@ -512,19 +386,20 @@
 
     <!-- UI Logic Scripts -->
     <script>
+        // Definición de Temas con Imágenes de Fondo Específicas (Rutas Locales)
         const themes = {
-            0: { name: 'jan', class: 'theme-jan', icon: 'fa-cube', sub: 'Matrix Natural' },
-            1: { name: 'feb', class: 'theme-feb', icon: 'fa-heart', sub: 'Amor Digital' },
-            2: { name: 'mar', class: 'theme-mar', icon: 'fa-seedling', sub: 'Renacer' },
-            3: { name: 'apr', class: 'theme-apr', icon: 'fa-frog', sub: 'Vida Salvaje' },
-            4: { name: 'may', class: 'theme-may', icon: 'fa-spa', sub: 'Floración Mística' },
-            5: { name: 'jun', class: 'theme-jun', icon: 'fa-sun', sub: 'Solsticio Dorado' },
-            6: { name: 'jul', class: 'theme-jul', icon: 'fa-tree', sub: 'Selva Profunda' },
-            7: { name: 'aug', class: 'theme-aug', icon: 'fa-leaf', sub: 'Frescura' },
-            8: { name: 'sep', class: 'theme-sep', icon: 'fa-wind', sub: 'Equinoccio' },
-            9: { name: 'oct', class: 'theme-oct', icon: 'fa-ghost', sub: 'Terror Épico' },
-            10: { name: 'nov', class: 'theme-nov', icon: 'fa-feather-alt', sub: 'Vientos de Cambio' },
-            11: { name: 'dec', class: 'theme-dec', icon: 'fa-snowflake', sub: 'Cero Absoluto' }
+            0: { name: 'jan', class: 'theme-jan', icon: 'fa-cube', sub: 'Enero', bg: 'Imagenes/Enero.webp' },
+            1: { name: 'feb', class: 'theme-feb', icon: 'fa-heart', sub: 'Febrero', bg: 'Imagenes/Febrero.webp' },
+            2: { name: 'mar', class: 'theme-mar', icon: 'fa-seedling', sub: 'Marzo', bg: 'Imagenes/Marzo.webp' },
+            3: { name: 'apr', class: 'theme-apr', icon: 'fa-frog', sub: 'Abril', bg: 'Imagenes/Abril.webp' },
+            4: { name: 'may', class: 'theme-may', icon: 'fa-spa', sub: 'Mayo', bg: 'Imagenes/Mayo.webp' },
+            5: { name: 'jun', class: 'theme-jun', icon: 'fa-sun', sub: 'Junio', bg: 'Imagenes/Junio.webp' },
+            6: { name: 'jul', class: 'theme-jul', icon: 'fa-tree', sub: 'Julio', bg: 'Imagenes/Julio.webp' },
+            7: { name: 'aug', class: 'theme-aug', icon: 'fa-leaf', sub: 'Agosto', bg: 'Imagenes/Agosto.webp' },
+            8: { name: 'sep', class: 'theme-sep', icon: 'fa-wind', sub: 'Septiembre', bg: 'Imagenes/Septiembre.webp' },
+            9: { name: 'oct', class: 'theme-oct', icon: 'fa-ghost', sub: 'Octubre', bg: 'Imagenes/Octubre.webp' },
+            10: { name: 'nov', class: 'theme-nov', icon: 'fa-feather-alt', sub: 'Noviembre', bg: 'Imagenes/Noviembre.webp' },
+            11: { name: 'dec', class: 'theme-dec', icon: 'fa-snowflake', sub: 'Diciembre', bg: 'Imagenes/Diciembre.webp' }
         };
 
         function applySeasonalTheme(monthIndex = null) {
@@ -533,21 +408,22 @@
             const theme = themes[month];
             
             const isLight = document.body.classList.contains('light-mode');
-            document.body.className = `antialiased selection:bg-brand-neon selection:text-black transition-colors duration-1000 ${theme.class} ${isLight ? 'light-mode' : ''}`;
+            document.body.className = `antialiased selection:bg-brand-neon selection:text-black transition-colors duration-300 ${theme.class} ${isLight ? 'light-mode' : ''}`;
             
             const sub = document.getElementById('seasonal-subtitle');
             if(sub) sub.innerHTML = `<i class="fas ${theme.icon} mr-2"></i> ${theme.sub} <i class="fas ${theme.icon} ml-2"></i>`;
-            
-            const allParticles = [
-                'seasonal-bg', 'video-particles-home', 'visual-particles-home',
-                'video-particles-plantillas', 'visual-particles-plantillas',
-                'video-particles-animales', 'visual-particles-animales',
-                'video-particles-planeta', 'visual-particles-planeta',
-                'video-particles-humanos', 'visual-particles-humanos',
-                'video-particles-temporada', 'visual-particles-temporada'
-            ];
-            
-            allParticles.forEach(id => createParticles(id, theme.icon, month, 15));
+
+            // Cambiar imagen de fondo con transición
+            const heroImg = document.getElementById('hero-image');
+            if(heroImg && theme.bg) {
+                if (heroImg.src !== theme.bg) {
+                    heroImg.style.opacity = '0';
+                    setTimeout(() => {
+                        heroImg.src = theme.bg;
+                        heroImg.onload = () => { heroImg.style.opacity = '0.5'; }; // Restaurar opacidad al cargar
+                    }, 500);
+                }
+            }
         }
 
         function forceTheme(monthIndex) {
@@ -563,27 +439,10 @@
 
         window.showCreator = function() {
             const alertBox = document.createElement('div');
-            alertBox.className = 'fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-black/90 border border-brand-neon text-white px-6 py-3 rounded-full z-[100] animate-slide-up font-orbitron text-xs tracking-widest shadow-[0_0_15px_var(--brand-color)] flex items-center';
+            alertBox.className = 'fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-black/90 border border-brand-neon text-white px-6 py-3 rounded-full z-[100] animate-slide-up font-orbitron text-xs tracking-widest flex items-center';
             alertBox.innerHTML = '<i class="fas fa-code mr-2 text-brand-neon"></i> Creado por <span class="font-bold text-brand-neon ml-1">DevCenterX</span>';
             document.body.appendChild(alertBox);
             setTimeout(() => alertBox.remove(), 3000);
-        }
-
-        function createParticles(containerId, iconClass, month, count) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            container.innerHTML = ''; 
-            const isFalling = (month === 8 || month === 11 || month === 9 || month === 0);
-            for (let i = 0; i < count; i++) {
-                const el = document.createElement('i');
-                el.className = `fas ${iconClass} particle ${isFalling ? 'falling' : ''}`;
-                el.style.left = Math.random() * 100 + '%';
-                el.style.fontSize = (Math.random() * 30 + 15) + 'px';
-                el.style.animationDuration = (Math.random() * 10 + 5) + 's'; 
-                el.style.animationDelay = (Math.random() * 5) + 's';
-                el.style.opacity = Math.random() * 0.5 + 0.3;
-                container.appendChild(el);
-            }
         }
 
         applySeasonalTheme();
@@ -677,15 +536,14 @@
             
             const mediaWrapper = document.getElementById('modal-media-wrapper');
             if(post.tipo === 'video') {
-                mediaWrapper.className = "w-full aspect-video bg-black flex items-center justify-center relative shadow-[0_0_50px_var(--brand-color)] rounded-b-3xl overflow-hidden mt-8 mb-4 border-y border-white/10";
+                mediaWrapper.className = "w-full aspect-video bg-black flex items-center justify-center relative rounded-b-3xl overflow-hidden mt-8 mb-4 border-y border-var(--card-border)";
                 mediaWrapper.innerHTML = `
-                    <div class="absolute inset-0 bg-[var(--brand-color)] opacity-20 blur-3xl z-0"></div>
                     <video controls autoplay class="relative z-10 w-full h-full max-h-[80vh] object-contain">
                         <source src="${post.media_url}" type="video/mp4">
                     </video>
                 `;
             } else {
-                mediaWrapper.className = "w-full h-[50vh] lg:h-[70vh] flex items-center justify-center relative shadow-[0_10px_50px_rgba(0,0,0,0.8)]";
+                mediaWrapper.className = "w-full h-[50vh] lg:h-[70vh] flex items-center justify-center relative";
                 mediaWrapper.innerHTML = `<img src="${post.media_url}" class="w-full h-full object-contain">`;
             }
             
