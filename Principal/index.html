@@ -194,8 +194,29 @@
         .tap-effect:active { transform: scale(0.98); }
         
         #hero-image { transition: opacity 0.5s ease-in-out; }
-        body.light-mode #hero-image { filter: grayscale(0) !important; opacity: 1 !important; }
-        body.light-mode #hero-overlay { background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), var(--bg-base)) !important; }
+        
+        /* AJUSTES PARA MODO CLARO - IMAGEN VIBRANTE Y ORIGINAL */
+        body.light-mode #hero-image {
+            filter: grayscale(0) contrast(1.05) !important; /* Colores originales con un toque de definición */
+            opacity: 1 !important; /* Totalmente visible */
+        }
+        
+        /* Ajuste del degradado sobre la imagen para modo claro: Más limpio para conservar el tono */
+        body.light-mode #hero-overlay {
+            background: linear-gradient(180deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0) 40%, 
+                rgba(255,255,255,0.6) 85%, 
+                var(--bg-base) 100%
+            ) !important;
+        }
+
+        /* Mejora de legibilidad en Hero Light Mode para que el texto resalte sobre la foto original */
+        body.light-mode .relative.z-10 h1,
+        body.light-mode .relative.z-10 p,
+        body.light-mode .relative.z-10 div {
+             text-shadow: 0 0 30px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.5); 
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-brand-neon selection:text-black transition-colors duration-300">
