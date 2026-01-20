@@ -1,10 +1,18 @@
 [
   {
-    "Título": "Seres Griegos",
+    "Título": "Dioses Griegos",
     "Entrada": "Grecia 1",
     "Categoría": "Principal",
-    "Curiosidad": "Mitos..",
+    "Curiosidad": "",
     "Descripción": "",
     "Multimedia": "Videos/Grecia1.mp4"
+  },
+  {
+    "Título": "Seres Griegos",
+    "Entrada": "Grecia🇬🇷",
+    "Categoría": "Principal",
+    "Curiosidad": "Mitos",
+    "Descripción": "",
+    "Multimedia": "Videos/Grecia.mp4"
   }
 ]
