@@ -281,11 +281,13 @@
         window.allPosts = {}; 
 
         async function loadContent() {
+            let posts = [];
+
+            // 1. CARGAR DESDE FIREBASE (Existente)
             try {
                 try { await signInAnonymously(auth); } catch(e) {}
                 const q = query(collection(db, 'productos'));
                 const snapshot = await getDocs(q);
-                let posts = [];
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     data.id = doc.id;
@@ -293,11 +295,54 @@
                     if (!data.tipo) data.tipo = (data.media_url && (data.media_url.includes('.mp4') || data.media_url.includes('/video/'))) ? 'video' : 'image';
                     posts.push(data);
                 });
-                renderPosts(posts);
             } catch (e) {
-                console.error("Error:", e);
-                document.querySelectorAll('.loading-spinner').forEach(el => el.innerHTML = "Error de conexión");
+                console.error("Error Firebase:", e);
+                // No bloqueamos, seguimos intentando cargar el JSON local
             }
+
+            // 2. CARGAR DESDE MANUAL.JSON (NUEVA FUNCIONALIDAD EXACTA)
+            try {
+                const response = await fetch('manual.json');
+                if (response.ok) {
+                    const manualData = await response.json();
+                    manualData.forEach(item => {
+                        // Mapeo EXACTO de tus claves en español a las variables internas
+                        
+                        // 1. Multimedia (Ruta del archivo)
+                        const mediaUrl = item["Multimedia"] || "";
+                        
+                        // Detectar tipo (video o imagen) basado en la extensión o ruta
+                        const isVideo = mediaUrl.match(/\.(mp4|webm|mov)$/i) || mediaUrl.includes('/video/') || mediaUrl.includes('Videos/');
+                        
+                        posts.push({
+                            // 2. Entrada (ID único)
+                            id: item["Entrada"] ? item["Entrada"].toString() : Math.random().toString(36).substr(2, 9),
+                            
+                            // 3. Título
+                            titulo: item["Título"] || "Sin Título",
+                            
+                            // 4. Categoría (se convierte a minúsculas para coincidir con las secciones: 'plantillas', 'planeta', etc.)
+                            categoria: (item["Categoría"] || "home").toLowerCase().trim(),
+                            
+                            // 5. Curiosidad (Dato curioso en el modal)
+                            curiosidad: item["Curiosidad"] || "",
+                            
+                            // 6. Descripción (Texto largo en el modal)
+                            descripcion: item["Descripción"] || "",
+                            
+                            media_url: mediaUrl,
+                            tipo: isVideo ? 'video' : 'image'
+                        });
+                    });
+                    console.log("Datos manuales cargados exitosamente:", manualData.length);
+                } else {
+                    console.log("No se encontró manual.json (asegúrate de que esté en la misma carpeta)");
+                }
+            } catch (e) {
+                console.log("Error cargando manual.json:", e);
+            }
+
+            renderPosts(posts);
         }
 
         function renderPosts(posts) {
@@ -310,6 +355,7 @@
                 'temporada': { video: 'grid-temporada-videos', visual: 'grid-temporada-visual' }
             };
 
+            // Limpiar contenedores antes de renderizar
             Object.values(containers).forEach(c => {
                 const v = document.getElementById(c.video);
                 const i = document.getElementById(c.visual);
@@ -344,7 +390,6 @@
         
         // Función de Descarga Segura y Robusta
         window.downloadMedia = async function(url, filename) {
-            // Intento 1: Fetch + Blob (Ideal para forzar descarga sin abrir pestaña)
             try {
                 const response = await fetch(url, { mode: 'cors' });
                 if (!response.ok) throw new Error('Fetch falló');
@@ -364,13 +409,11 @@
                 }, 100);
             } catch (error) {
                 console.warn("Descarga directa (Blob) falló, intentando fallback de enlace...", error);
-                
-                // Intento 2: Fallback directo (Enlace _blank)
                 const a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = url;
                 a.download = filename;
-                a.target = '_blank'; // Importante para evitar bloqueo de navegación
+                a.target = '_blank';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -573,7 +616,7 @@
 
     <!-- MODAL (Detalle Post) -->
     <div id="info-modal" class="fixed inset-0 z-[100] hidden overflow-y-auto animate-fade-in">
-        <button onclick="closeModal()" class="fixed top-4 right-4 z-50 bg-black/50 p-3 rounded-full border border-brand-neon text-brand-neon hover:bg-red-900 hover:border-red-500 hover:text-white transition-colors"><i class="fas fa-times"></i></button>
+        <button onclick="closeModal()" class="fixed top-6 right-6 z-[110] w-12 h-12 flex items-center justify-center rounded-full bg-black/80 border border-brand-neon text-brand-neon text-xl hover:bg-red-600 hover:border-red-600 hover:text-white transition-all duration-300 shadow-lg backdrop-blur-sm"><i class="fas fa-times"></i></button>
         <div class="min-h-screen pb-10">
             <div id="modal-media-wrapper" class="w-full flex items-center justify-center relative bg-black transition-all"></div>
             
@@ -597,7 +640,7 @@
     <!-- MODAL PANTALLA COMPLETA (Para Doble Click) -->
     <div id="fullscreen-modal" class="fixed inset-0 z-[200] hidden bg-black flex items-center justify-center p-0" onclick="closeFullscreen()">
         <img id="fullscreen-img" src="" class="max-w-full max-h-full object-contain pointer-events-none" oncontextmenu="return false;">
-        <button onclick="closeFullscreen()" class="absolute top-5 right-5 text-white text-3xl opacity-75 hover:opacity-100"><i class="fas fa-times"></i></button>
+        <button onclick="closeFullscreen()" class="absolute top-6 right-6 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 text-white text-xl border border-white/20 hover:bg-white/20 transition-all backdrop-blur-sm"><i class="fas fa-times"></i></button>
     </div>
 
     <!-- UI Logic Scripts -->
