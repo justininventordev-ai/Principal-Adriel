@@ -20,8 +20,6 @@
     <meta name="publisher" content="DevCenterX">
                  <!------ Meta data ------>
 
-
-
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600;800&family=Syncopate:wght@700&family=Creepster&family=Berkshire+Swash&display=swap" rel="stylesheet">
     
@@ -318,11 +316,18 @@
                     manualData.forEach(item => {
                         // Mapeo EXACTO de tus claves en español a las variables internas
                         
-                        // 1. Multimedia (Ruta del archivo)
+                        // 1. Multimedia (Ruta del archivo o LINK de Dailymotion/Vidyard)
                         const mediaUrl = item["Multimedia"] || "";
                         
-                        // Detectar tipo (video o imagen) basado en la extensión o ruta
-                        const isVideo = mediaUrl.match(/\.(mp4|webm|mov)$/i) || mediaUrl.includes('/video/') || mediaUrl.includes('Videos/');
+                        // Detectar tipo (video o imagen) INCLUYENDO LINKS EXTERNOS
+                        // Aquí es donde detecto si pusiste un link de Dailymotion, Vidyard, etc.
+                        const isVideo = mediaUrl.match(/\.(mp4|webm|mov)$/i) || 
+                                        mediaUrl.includes('/video/') || 
+                                        mediaUrl.includes('Videos/') ||
+                                        mediaUrl.includes('dailymotion') ||
+                                        mediaUrl.includes('vidyard') ||
+                                        mediaUrl.includes('youtube') ||
+                                        mediaUrl.includes('embed');
                         
                         posts.push({
                             // 2. Entrada (ID único)
@@ -331,13 +336,13 @@
                             // 3. Título
                             titulo: item["Título"] || "Sin Título",
                             
-                            // 4. Categoría (se convierte a minúsculas para coincidir con las secciones: 'plantillas', 'planeta', etc.)
+                            // 4. Categoría
                             categoria: (item["Categoría"] || "home").toLowerCase().trim(),
                             
-                            // 5. Curiosidad (Dato curioso en el modal)
+                            // 5. Curiosidad
                             curiosidad: item["Curiosidad"] || "",
                             
-                            // 6. Descripción (Texto largo en el modal)
+                            // 6. Descripción
                             descripcion: item["Descripción"] || "",
                             
                             media_url: mediaUrl,
@@ -390,7 +395,44 @@
             });
         }
 
-        function cardVideo(post) { return `<div onclick="openPost('${post.id}')" class="mobile-card overflow-hidden group cursor-pointer tap-effect"><div class="relative aspect-video w-full bg-black"><video src="${post.media_url}#t=1.0" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" preload="metadata" muted playsinline oncontextmenu="return false;"></video><div class="play-overlay"><div class="play-icon"><i class="fas fa-play text-black ml-1 text-2xl"></i></div></div></div><div class="p-5"><h3 class="text-xl font-bold text-dynamic font-sans leading-tight mb-2 line-clamp-2">${post.titulo}</h3></div></div>`; }
+        // Función para renderizar CARD de Video (Maneja IFRAMES y MP4)
+        function cardVideo(post) { 
+            // Verificamos si es un link externo (Dailymotion/Vidyard) o un MP4 local
+            const isEmbed = post.media_url.includes('dailymotion') || post.media_url.includes('vidyard') || post.media_url.includes('youtube') || post.media_url.includes('embed') || !post.media_url.includes('.mp4');
+            
+            let contentVideo;
+            
+            if (isEmbed) {
+                // Es un link externo: Mostramos el iframe pero bloqueamos clicks para que abra el modal
+                contentVideo = `
+                    <div class="relative w-full h-full bg-black pointer-events-none">
+                         <iframe 
+                            src="${post.media_url}" 
+                            class="w-full h-full object-cover opacity-80" 
+                            frameborder="0"
+                            allow="autoplay; fullscreen"
+                            allowfullscreen
+                         ></iframe>
+                    </div>
+                `;
+            } else {
+                // Es un archivo MP4 normal
+                contentVideo = `<video src="${post.media_url}#t=1.0" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" preload="metadata" muted playsinline oncontextmenu="return false;"></video>`;
+            }
+
+            return `
+                <div onclick="openPost('${post.id}')" class="mobile-card overflow-hidden group cursor-pointer tap-effect">
+                    <div class="relative aspect-video w-full bg-black">
+                        ${contentVideo}
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fas fa-play text-black ml-1 text-2xl"></i></div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-dynamic font-sans leading-tight mb-2 line-clamp-2">${post.titulo}</h3>
+                    </div>
+                </div>`; 
+        }
         
         function cardImage(post) { 
             return `<div onclick="openPost('${post.id}')" class="mobile-card relative h-80 lg:h-[500px] overflow-hidden group cursor-pointer tap-effect"><img src="${post.media_url}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400'" oncontextmenu="return false;"><div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div><div class="absolute bottom-0 p-6"><h3 class="text-3xl font-dancing font-bold text-white leading-tight drop-shadow-lg">${post.titulo}</h3></div></div>`; 
@@ -786,9 +828,9 @@
             const icons = document.querySelectorAll('#bottom-dock i');
             icons.forEach(icon => {
                 if(icon.id !== 'dock-temporada') {
-                     icon.className = icon.className.replace(/text-(brand-neon|cyan-400|white)/g, ''); 
-                     icon.classList.remove('scale-110');
-                     icon.classList.add('text-gray-500');
+                      icon.className = icon.className.replace(/text-(brand-neon|cyan-400|white)/g, ''); 
+                      icon.classList.remove('scale-110');
+                      icon.classList.add('text-gray-500');
                 } else {
                     icon.classList.remove('scale-110');
                     icon.classList.remove('text-orange-400');
@@ -805,8 +847,8 @@
                 
                 if (activeId === 'home') activeIcon.classList.add('text-cyan-400');
                 else if (activeId === 'temporada') {
-                     activeIcon.classList.remove('text-orange-500'); 
-                     activeIcon.classList.add('text-orange-400');
+                      activeIcon.classList.remove('text-orange-500'); 
+                      activeIcon.classList.add('text-orange-400');
                 }
                 else activeIcon.classList.add('text-brand-neon');
             }
@@ -833,13 +875,31 @@
             document.getElementById('modal-fact').innerText = post.curiosidad || '...';
             
             const mediaWrapper = document.getElementById('modal-media-wrapper');
+            
             if(post.tipo === 'video') {
                 mediaWrapper.className = "w-full aspect-video bg-black flex items-center justify-center relative rounded-b-3xl overflow-hidden mt-8 mb-4 border-y border-var(--card-border)";
-                mediaWrapper.innerHTML = `
-                    <video controls autoplay class="relative z-10 w-full h-full max-h-[80vh] object-contain" oncontextmenu="return false;">
-                        <source src="${post.media_url}" type="video/mp4">
-                    </video>
-                `;
+                
+                // DETECCIÓN DE IFRAME / LINK EXTERNO EN EL MODAL
+                if (post.media_url.includes('dailymotion') || post.media_url.includes('vidyard') || post.media_url.includes('youtube') || post.media_url.includes('embed') || !post.media_url.includes('.mp4')) {
+                     // Es un link externo (Dailymotion/Vidyard)
+                    mediaWrapper.innerHTML = `
+                        <iframe 
+                            src="${post.media_url}" 
+                            class="w-full h-full" 
+                            frameborder="0"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowfullscreen
+                        ></iframe>
+                    `;
+                } else {
+                    // Es un archivo MP4 Local
+                    mediaWrapper.innerHTML = `
+                        <video controls autoplay class="relative z-10 w-full h-full max-h-[80vh] object-contain" oncontextmenu="return false;">
+                            <source src="${post.media_url}" type="video/mp4">
+                        </video>
+                    `;
+                }
+                
             } else {
                 mediaWrapper.className = "w-full flex items-center justify-center relative mt-6"; 
                 mediaWrapper.innerHTML = `<img src="${post.media_url}" class="max-w-full max-h-[60vh] lg:max-h-[85vh] object-contain rounded-xl shadow-2xl cursor-zoom-in" ondblclick="openFullscreenImage('${post.media_url}')" oncontextmenu="return false;">`;
